@@ -1,0 +1,36 @@
+%global commit @COMMIT@
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
+
+Name: haproxy-tcp-check-wrapper
+Version: @VERSION@
+Release: @RELEASE@%{?dist}
+Summary: HAProxy tcp-check wrapper
+License: MIT
+
+URL: https://github.com/ooneko/haproxy_tcp_check_wrapper
+Source0: %{name}-%{version}-%{shortcommit}.tar.gz
+
+%description
+HAProxy tcp-check wrapper.
+
+%prep
+%setup -q
+
+%build
+make %{?_smp_mflags}
+
+%install
+%make_install
+install -p -D -m 0755 %{builddir}/service/haproxy-tcp-check-wrapper %{buildroot}/%{_sysconfdir}/init.d/haproxy-tcp-check-wrapper
+install -p -D -m 0644 %{builddir}/etc/haproxy-tcp-check-wrapper/ %{buildroot}/%{_sysconfdir}/haproxy-tcp-check-wrapper/
+
+%files
+%license LICENSE
+%{_bindir}/%{name}
+%{_sysconfdir}/%{_sysconfdir}/*
+
+
+
+%changelog
+* Tue Dec 17 2019 Lucas Hua - 0.1.1-1
+  - First package.
