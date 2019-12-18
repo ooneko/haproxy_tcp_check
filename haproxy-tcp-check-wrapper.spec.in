@@ -16,19 +16,16 @@ HAProxy tcp-check wrapper.
 %prep
 %setup -q
 
-%build
-make %{?_smp_mflags}
-
 %install
-%make_install
-install -p -D -m 0755 %{builddir}/service/haproxy-tcp-check-wrapper %{buildroot}/%{_sysconfdir}/init.d/haproxy-tcp-check-wrapper
-install -p -D -m 0644 %{builddir}/etc/haproxy-tcp-check-wrapper/ %{buildroot}/%{_sysconfdir}/haproxy-tcp-check-wrapper/
+install -p -D -m 0755 bin/haproxy-tcp-check-wrapper-linux-amd64 %{buildroot}/%{_bindir}/%{name}
+install -p -D -m 0755 service/haproxy-tcp-check-wrapper %{buildroot}/%{_sysconfdir}/init.d/haproxy-tcp-check-wrapper
+install -p -D -m 0644 etc/haproxy-tcp-check-wrapper/config.toml %{buildroot}/%{_sysconfdir}/haproxy-tcp-check-wrapper/config.toml
 
 %files
 %license LICENSE
 %{_bindir}/%{name}
-%{_sysconfdir}/%{_sysconfdir}/*
-
+%{_sysconfdir}/init.d/haproxy-tcp-check-wrapper
+%{_sysconfdir}/haproxy-tcp-check-wrapper
 
 
 %changelog
